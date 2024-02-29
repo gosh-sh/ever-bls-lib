@@ -1,7 +1,6 @@
 use std::collections::HashMap;
-use super::random_helper::*;
-use ton_types::{fail, Result};
-use std::time::{Instant, Duration};
+
+use tvm_types::{fail, Result};
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct NodesInfo {
@@ -69,9 +68,9 @@ impl NodesInfo {
                 *index,
                 if new_info.contains_key(&index) {
                     new_info[index] + *number_of_occurrence
-                   } else {
+                } else {
                     *number_of_occurrence
-                   },
+                },
             );
         }
         Ok(NodesInfo {
@@ -126,4 +125,3 @@ impl NodesInfo {
         NodesInfo::with_data(new_info, total_num_of_nodes)
     }
 }
-
