@@ -24,7 +24,7 @@ impl BlsSignature {
         let mut vec = Vec::new();
         vec.extend_from_slice(&self.sig_bytes);
         let nodes_info_bytes = &self.nodes_info.serialize();
-        vec.extend_from_slice(&nodes_info_bytes);
+        vec.extend_from_slice(nodes_info_bytes);
         vec
     }
 
@@ -48,7 +48,7 @@ impl BlsSignature {
         sk_bytes: &[u8; BLS_SECRET_KEY_LEN],
         msg: &Vec<u8>,
     ) -> Result<[u8; BLS_SIG_LEN]> {
-        if msg.len() == 0 {
+        if msg.is_empty() {
             fail!("Msg to sign can not be empty!")
         }
         let sk = convert_secret_key_bytes_to_secret_key(sk_bytes)?;
@@ -61,7 +61,7 @@ impl BlsSignature {
         msg: &Vec<u8>,
         pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN],
     ) -> Result<bool> {
-        if msg.len() == 0 {
+        if msg.is_empty() {
             fail!("Msg to sign can not be empty!")
         }
         let sig = convert_signature_bytes_to_signature(sig_bytes)?;

@@ -200,7 +200,7 @@ fn test_verify() {
         //  println!("Public key : {:?}", key_pair.0);
         //println!("Secret key : {:?}", key_pair.1);
         println!("Time elapsed by verify is: {:?}", duration);
-        assert_eq!(res, true);
+        assert!(res);
     }
 }
 
@@ -247,7 +247,7 @@ fn test_aggregate_public_keys() {
             public_keys.push(key_pair.0);
         }
         let public_keys_refs: Vec<&[u8; BLS_PUBLIC_KEY_LEN]> =
-            public_keys.iter().map(|pk| pk).collect();
+            public_keys.iter().collect();
         let now = Instant::now();
         let _res = aggregate_public_keys(&public_keys_refs).unwrap();
         let duration = now.elapsed();
@@ -268,7 +268,7 @@ fn test_aggregate_public_keys_based_on_nodes_info() {
             let nodes_info = NodesInfo::create_node_info(total_num_of_nodes, *ind).unwrap();
             node_info_vec.push(nodes_info)
         }
-        let node_info_vec_refs: Vec<&NodesInfo> = node_info_vec.iter().map(|info| info).collect();
+        let node_info_vec_refs: Vec<&NodesInfo> = node_info_vec.iter().collect();
         let info = NodesInfo::merge_multiple(&node_info_vec_refs).unwrap();
         println!("Node info size = {}", info.map.len());
         // info.print();
@@ -279,7 +279,7 @@ fn test_aggregate_public_keys_based_on_nodes_info() {
             public_keys.push(key_pair.0);
         }
         let public_keys_refs: Vec<&[u8; BLS_PUBLIC_KEY_LEN]> =
-            public_keys.iter().map(|pk| pk).collect();
+            public_keys.iter().collect();
         let now = Instant::now();
         let _res = aggregate_public_keys_based_on_nodes_info(&public_keys_refs, &info.serialize())
             .unwrap();
@@ -371,7 +371,7 @@ fn test_aggregate_bls_signatures() {
             .serialize();
             sigs.push(bls_sig);
         }
-        let sigs_refs: Vec<&Vec<u8>> = sigs.iter().map(|sig| sig).collect();
+        let sigs_refs: Vec<&Vec<u8>> = sigs.iter().collect();
 
         let now = Instant::now();
         let _res = aggregate_bls_signatures(&sigs_refs).unwrap();

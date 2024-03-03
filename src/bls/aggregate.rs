@@ -12,14 +12,14 @@ use tvm_types::fail;
 pub fn aggregate_public_keys(
     bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>,
 ) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
-    if bls_pks_bytes.len() == 0 {
+    if bls_pks_bytes.is_empty() {
         fail!("Vector of public keys can not be empty!");
     }
     let mut pks: Vec<PublicKey> = Vec::new();
     for bls_pk in bls_pks_bytes {
         pks.push(convert_public_key_bytes_to_public_key(bls_pk)?);
     }
-    let pk_refs: Vec<&PublicKey> = pks.iter().map(|pk| pk).collect();
+    let pk_refs: Vec<&PublicKey> = pks.iter().collect();
     let agg = match AggregatePublicKey::aggregate(&pk_refs, true) {
         Ok(agg) => agg,
         Err(err) => fail!("aggregate failure: {:?}", err),
@@ -31,7 +31,7 @@ pub fn aggregate_public_keys_based_on_nodes_info(
     bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>,
     nodes_info_bytes: &Vec<u8>,
 ) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
-    if bls_pks_bytes.len() == 0 {
+    if bls_pks_bytes.is_empty() {
         fail!("Vector of public keys can not be empty!");
     }
     let nodes_info = NodesInfo::deserialize(nodes_info_bytes)?;
@@ -83,16 +83,16 @@ pub fn aggregate_two_bls_signatures(
 }
 
 pub fn aggregate_bls_signatures(sig_bytes_with_nodes_info_vec: &Vec<&Vec<u8>>) -> Result<Vec<u8>> {
-    if sig_bytes_with_nodes_info_vec.len() == 0 {
+    if sig_bytes_with_nodes_info_vec.is_empty() {
         fail!("Vector of signatures can not be empty!");
     }
     let mut bls_sigs: Vec<BlsSignature> = Vec::new();
     for bytes in sig_bytes_with_nodes_info_vec {
-        let agg_sig = BlsSignature::deserialize(&bytes)?;
+        let agg_sig = BlsSignature::deserialize(bytes)?;
         bls_sigs.push(agg_sig);
     }
 
-    let bls_sigs_refs: Vec<&BlsSignature> = bls_sigs.iter().map(|sig| sig).collect();
+    let bls_sigs_refs: Vec<&BlsSignature> = bls_sigs.iter().collect();
     let mut nodes_info_refs: Vec<&NodesInfo> = Vec::new();
     let mut sigs: Vec<Signature> = Vec::new();
     for i in 0..bls_sigs_refs.len() {
@@ -109,7 +109,7 @@ pub fn aggregate_bls_signatures(sig_bytes_with_nodes_info_vec: &Vec<&Vec<u8>>) -
 
     let new_nodes_info = NodesInfo::merge_multiple(&nodes_info_refs)?;
 
-    let sig_refs: Vec<&Signature> = sigs.iter().map(|sig| sig).collect();
+    let sig_refs: Vec<&Signature> = sigs.iter().collect();
 
     let agg = match AggregateSignature::aggregate(&sig_refs, true) {
         Ok(agg) => agg,

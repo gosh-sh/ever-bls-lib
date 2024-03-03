@@ -78,7 +78,7 @@ impl BlsKeyPair {
     pub fn gen_bls_key_pair_based_on_key_material(
         ikm: &[u8; BLS_KEY_MATERIAL_LEN],
     ) -> Result<Self> {
-        let key_pair = BlsKeyPair::gen_key_pair_based_on_key_material(&ikm)?;
+        let key_pair = BlsKeyPair::gen_key_pair_based_on_key_material(ikm)?;
         Ok(BlsKeyPair::convert_key_pair_to_bls_key_pair(key_pair))
     }
 
@@ -99,16 +99,16 @@ impl BlsKeyPair {
         }
         if let Ok(sk) = SecretKey::key_gen(ikm, &[]) {
             let pk = sk.sk_to_pk();
-            Ok(KeyPair { sk: sk, pk: pk })
+            Ok(KeyPair { sk, pk })
         } else {
             fail!("Failed while generate key")
         }
     }
 
     fn convert_key_pair_to_bls_key_pair(key_pair: KeyPair) -> Self {
-        return BlsKeyPair {
+        BlsKeyPair {
             sk_bytes: key_pair.sk.to_bytes(),
             pk_bytes: key_pair.pk.to_bytes(),
-        };
+        }
     }
 }

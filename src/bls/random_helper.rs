@@ -50,7 +50,7 @@ pub fn create_random_nodes_info(total_num_of_nodes: u16, attempts: u16) -> Nodes
         let nodes_info = NodesInfo::create_node_info(total_num_of_nodes, *ind).unwrap();
         node_info_vec.push(nodes_info)
     }
-    let node_info_vec_refs: Vec<&NodesInfo> = node_info_vec.iter().map(|info| info).collect();
-    let info = NodesInfo::merge_multiple(&node_info_vec_refs).unwrap();
-    info
+    let node_info_vec_refs: Vec<&NodesInfo> = node_info_vec.iter().collect();
+    
+    NodesInfo::merge_multiple(&node_info_vec_refs).unwrap()
 }

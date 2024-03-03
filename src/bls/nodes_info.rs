@@ -29,7 +29,7 @@ impl NodesInfo {
         if total_num_of_nodes == 0 {
             fail!("Total number of nodes can not be zero!");
         }
-        if info.len() == 0 {
+        if info.is_empty() {
             fail!("Node info should not be empty!")
         }
         for (index, number_of_occurrence) in &info {
@@ -66,7 +66,7 @@ impl NodesInfo {
         for (index, number_of_occurrence) in &info2.map {
             new_info.insert(
                 *index,
-                if new_info.contains_key(&index) {
+                if new_info.contains_key(index) {
                     new_info[index] + *number_of_occurrence
                 } else {
                     *number_of_occurrence
@@ -83,9 +83,9 @@ impl NodesInfo {
         if info_vec.len() <= 1 {
             fail!("Nodes info collection must have at least two elements!!")
         }
-        let mut final_nodes_info = NodesInfo::merge(&info_vec[0], &info_vec[1])?;
+        let mut final_nodes_info = NodesInfo::merge(info_vec[0], info_vec[1])?;
         for i in 2..info_vec.len() {
-            final_nodes_info = NodesInfo::merge(&final_nodes_info, &info_vec[i])?;
+            final_nodes_info = NodesInfo::merge(&final_nodes_info, info_vec[i])?;
         }
         Ok(final_nodes_info)
     }
