@@ -1,6 +1,5 @@
 use blst::min_pk::*;
 //use blst::min_sig::*;
-use std::convert::TryInto;
 use tvm_types::{fail, Result};
 
 use crate::bls::BLS_PUBLIC_KEY_LEN;
