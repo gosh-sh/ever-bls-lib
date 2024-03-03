@@ -1,14 +1,38 @@
 [package]
-edition = '2018'
-name = 'gosh_bls_lib'
-version = '0.2.0'
+edition = "2021"
+name = "gosh_bls_lib"
+version = "0.3.0"
+
+[profile.profiling]
+debug = 1
+inherits = 'release'
+
+[profile.dev]
+# Must always use panic = "abort" to avoid needing to define the unstable eh_personality lang item.
+panic = "abort"
+# Enable only a small amount of optimization in debug mode
+opt-level = 1
+
+# Enable high optimizations for dependencies, but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+opt-level = "z"   # Optimize for size.
+lto = true        # Enable Link Time Optimization
+codegen-units = 1 # Reduce number of codegen units to increase optimizations.
+panic = "abort"   # Abort on panic
+strip = true      # Automatically strip symbols from the binary.
 
 [dependencies]
 anyhow = "1.0.80"
-criterion = '0.3'
-failure = '0.1'
-rand = '0.7'
-rand_chacha = '0.2'
-blst = { features = [ 'portable' ], version = '0.3.5' }
-tvm_types = { git = 'https://github.com/tvmlabs/tvm-types.git', tag = '3.0.1' }
+blst = { features = ["portable"], version = "0.3.5" }
+criterion = "0.3"
+failure = "0.1"
+hex = "0.4.3"
+rand = "0.7"
+rand_chacha = "0.2"
+tvm_types = { git = "https://github.com/tvmlabs/tvm-types", tag = "3.0.1" }
 
+[[bin]]
+name = "bls_keypair_gen"
