@@ -28,7 +28,7 @@ impl BlsSignature {
         vec
     }
 
-    pub fn deserialize(sig_bytes_with_nodes_info: &Vec<u8>) -> Result<Self> {
+    pub fn deserialize(sig_bytes_with_nodes_info: &[u8]) -> Result<Self> {
         if sig_bytes_with_nodes_info.len() < BLS_SIG_LEN + 6 {
             fail!("Length of sig_bytes_with_nodes_info is too short!")
         }
@@ -46,7 +46,7 @@ impl BlsSignature {
 
     pub fn simple_sign(
         sk_bytes: &[u8; BLS_SECRET_KEY_LEN],
-        msg: &Vec<u8>,
+        msg: &[u8],
     ) -> Result<[u8; BLS_SIG_LEN]> {
         if msg.is_empty() {
             fail!("Msg to sign can not be empty!")
@@ -58,7 +58,7 @@ impl BlsSignature {
 
     pub fn simple_verify(
         sig_bytes: &[u8; BLS_SIG_LEN],
-        msg: &Vec<u8>,
+        msg: &[u8],
         pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN],
     ) -> Result<bool> {
         if msg.is_empty() {
@@ -92,7 +92,7 @@ impl BlsSignature {
 
     pub fn sign(
         sk_bytes: &[u8; BLS_SECRET_KEY_LEN],
-        msg: &Vec<u8>,
+        msg: &[u8],
         node_index: u16,
         total_num_of_nodes: u16,
     ) -> Result<Vec<u8>> {
@@ -106,16 +106,16 @@ impl BlsSignature {
     }
 
     pub fn truncate_nodes_info_from_sig(
-        sig_bytes_with_nodes_info: &Vec<u8>,
+        sig_bytes_with_nodes_info: &[u8],
     ) -> Result<[u8; BLS_SIG_LEN]> {
         let bls_sig = BlsSignature::deserialize(sig_bytes_with_nodes_info)?;
         Ok(bls_sig.sig_bytes)
     }
 
     pub fn verify(
-        sig_bytes_with_nodes_info: &Vec<u8>,
+        sig_bytes_with_nodes_info: &[u8],
         pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN],
-        msg: &Vec<u8>,
+        msg: &[u8],
     ) -> Result<bool> {
         let sig_bytes = BlsSignature::truncate_nodes_info_from_sig(sig_bytes_with_nodes_info)?;
         let res = BlsSignature::simple_verify(&sig_bytes, msg, pk_bytes)?;
@@ -133,7 +133,7 @@ impl BlsSignature {
         println!("--------------------------------------------------");
     }
 
-    pub fn print_bls_signature(bls_sig_bytes: &Vec<u8>) {
+    pub fn print_bls_signature(bls_sig_bytes: &[u8]) {
         let bls_sig = BlsSignature::deserialize(bls_sig_bytes).unwrap();
         bls_sig.print();
     }

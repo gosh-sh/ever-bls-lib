@@ -28,7 +28,7 @@ pub fn aggregate_public_keys(
 }
 
 pub fn aggregate_public_keys_based_on_nodes_info(
-    bls_pks_bytes: &Vec<&[u8; BLS_PUBLIC_KEY_LEN]>,
+    bls_pks_bytes: &[&[u8; BLS_PUBLIC_KEY_LEN]],
     nodes_info_bytes: &Vec<u8>,
 ) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     if bls_pks_bytes.is_empty() {
@@ -95,9 +95,9 @@ pub fn aggregate_bls_signatures(sig_bytes_with_nodes_info_vec: &Vec<&Vec<u8>>) -
     let bls_sigs_refs: Vec<&BlsSignature> = bls_sigs.iter().collect();
     let mut nodes_info_refs: Vec<&NodesInfo> = Vec::new();
     let mut sigs: Vec<Signature> = Vec::new();
-    for i in 0..bls_sigs_refs.len() {
-        nodes_info_refs.push(&bls_sigs_refs[i].nodes_info);
-        let sig = convert_signature_bytes_to_signature(&bls_sigs_refs[i].sig_bytes)?;
+    for item in &bls_sigs_refs {
+        nodes_info_refs.push(&item.nodes_info);
+        let sig = convert_signature_bytes_to_signature(&item.sig_bytes)?;
         println!("{:?}", &sig.to_bytes());
         //return this part to exclude zero sig
         /* let res = sig.validate(true);
