@@ -51,6 +51,6 @@ pub fn create_random_nodes_info(total_num_of_nodes: u16, attempts: u16) -> Nodes
         node_info_vec.push(nodes_info)
     }
     let node_info_vec_refs: Vec<&NodesInfo> = node_info_vec.iter().collect();
-    
+
     NodesInfo::merge_multiple(&node_info_vec_refs).unwrap()
 }
