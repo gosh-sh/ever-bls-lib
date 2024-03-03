@@ -29,7 +29,7 @@ pub fn aggregate_public_keys(
 
 pub fn aggregate_public_keys_based_on_nodes_info(
     bls_pks_bytes: &[&[u8; BLS_PUBLIC_KEY_LEN]],
-    nodes_info_bytes: &Vec<u8>,
+    nodes_info_bytes: &[u8],
 ) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     if bls_pks_bytes.is_empty() {
         fail!("Vector of public keys can not be empty!");
@@ -56,8 +56,8 @@ pub fn aggregate_public_keys_based_on_nodes_info(
 }
 
 pub fn aggregate_two_bls_signatures(
-    sig_bytes_with_nodes_info_1: &Vec<u8>,
-    sig_bytes_with_nodes_info_2: &Vec<u8>,
+    sig_bytes_with_nodes_info_1: &[u8],
+    sig_bytes_with_nodes_info_2: &[u8],
 ) -> Result<Vec<u8>> {
     let bls_sig_1 = BlsSignature::deserialize(sig_bytes_with_nodes_info_1)?;
     let bls_sig_2 = BlsSignature::deserialize(sig_bytes_with_nodes_info_2)?;

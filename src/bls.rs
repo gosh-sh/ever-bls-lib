@@ -74,18 +74,16 @@ pub fn sign_and_add_node_info(
     BlsSignature::sign(sk_bytes, msg, node_index, total_num_of_nodes)
 }
 
-pub fn truncate_nodes_info_from_sig(
-    sig_bytes_with_nodes_info: &Vec<u8>,
-) -> Result<[u8; BLS_SIG_LEN]> {
+pub fn truncate_nodes_info_from_sig(sig_bytes_with_nodes_info: &[u8]) -> Result<[u8; BLS_SIG_LEN]> {
     BlsSignature::truncate_nodes_info_from_sig(sig_bytes_with_nodes_info)
 }
 
-pub fn get_nodes_info_from_sig(sig_bytes_with_nodes_info: &Vec<u8>) -> Result<Vec<u8>> {
+pub fn get_nodes_info_from_sig(sig_bytes_with_nodes_info: &[u8]) -> Result<Vec<u8>> {
     BlsSignature::get_nodes_info_from_sig(sig_bytes_with_nodes_info)
 }
 
 pub fn truncate_nodes_info_and_verify(
-    sig_bytes_with_nodes_info: &Vec<u8>,
+    sig_bytes_with_nodes_info: &[u8],
     pk_bytes: &[u8; BLS_PUBLIC_KEY_LEN],
     msg: &[u8],
 ) -> Result<bool> {
@@ -97,15 +95,15 @@ pub fn aggregate_bls_signatures(bls_sigs_bytes: &Vec<&Vec<u8>>) -> Result<Vec<u8
 }
 
 pub fn aggregate_two_bls_signatures(
-    bls_sig_1_bytes: &Vec<u8>,
-    bls_sig_2_bytes: &Vec<u8>,
+    bls_sig_1_bytes: &[u8],
+    bls_sig_2_bytes: &[u8],
 ) -> Result<Vec<u8>> {
     aggregate::aggregate_two_bls_signatures(bls_sig_1_bytes, bls_sig_2_bytes)
 }
 
 pub fn aggregate_public_keys_based_on_nodes_info(
     bls_pks_bytes: &[&[u8; BLS_PUBLIC_KEY_LEN]],
-    nodes_info_bytes: &Vec<u8>,
+    nodes_info_bytes: &[u8],
 ) -> Result<[u8; BLS_PUBLIC_KEY_LEN]> {
     aggregate::aggregate_public_keys_based_on_nodes_info(bls_pks_bytes, nodes_info_bytes)
 }

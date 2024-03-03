@@ -79,13 +79,13 @@ impl NodesInfo {
         })
     }
 
-    pub fn merge_multiple(info_vec: &Vec<&NodesInfo>) -> Result<NodesInfo> {
+    pub fn merge_multiple(info_vec: &[&NodesInfo]) -> Result<NodesInfo> {
         if info_vec.len() <= 1 {
             fail!("Nodes info collection must have at least two elements!!")
         }
         let mut final_nodes_info = NodesInfo::merge(info_vec[0], info_vec[1])?;
-        for i in 2..info_vec.len() {
-            final_nodes_info = NodesInfo::merge(&final_nodes_info, info_vec[i])?;
+        for item in info_vec.iter().skip(2) {
+            final_nodes_info = NodesInfo::merge(&final_nodes_info, item)?;
         }
         Ok(final_nodes_info)
     }
@@ -104,7 +104,7 @@ impl NodesInfo {
         result_vec
     }
 
-    pub fn deserialize(info_bytes: &Vec<u8>) -> Result<NodesInfo> {
+    pub fn deserialize(info_bytes: &[u8]) -> Result<NodesInfo> {
         if info_bytes.len() <= 2 || (info_bytes.len() % 4) != 2 {
             fail!("node_info_bytes must have non zero length (> 2) being of form 4*k+2!");
         }

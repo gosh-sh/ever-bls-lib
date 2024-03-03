@@ -100,7 +100,7 @@ impl BlsSignature {
         add_node_info_to_sig(sig, node_index, total_num_of_nodes)
     }
 
-    pub fn get_nodes_info_from_sig(sig_bytes_with_nodes_info: &Vec<u8>) -> Result<Vec<u8>> {
+    pub fn get_nodes_info_from_sig(sig_bytes_with_nodes_info: &[u8]) -> Result<Vec<u8>> {
         let bls_sig = BlsSignature::deserialize(sig_bytes_with_nodes_info)?;
         Ok(bls_sig.nodes_info.serialize())
     }
