@@ -1,18 +1,17 @@
 // 2022-2024 (c) Copyright Contributors to the GOSH DAO. All rights reserved.
 //
+use clap::Parser;
 use gosh_bls_lib::bls::gen_bls_key_pair;
 use gosh_bls_lib::bls::gen_bls_key_pair_based_on_key_material;
 use gosh_bls_lib::bls::BLS_SECRET_KEY_LEN;
-use clap::Parser;
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Args {
     /// Hex string with 32 bytes of key material for bls
     #[arg(short, long)]
-    key_material: Option<String>
+    key_material: Option<String>,
 }
-
 
 fn main() {
     let args: Args = Args::parse();
