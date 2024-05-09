@@ -16,7 +16,7 @@ struct Args {
     #[arg(short, long)]
     key_material: Option<String>,
     /// Number of key pairs that should be generated
-    #[arg(short, long)]
+    #[arg(short, long, conflicts_with = "key_material")]
     number: Option<u32>,
     /// Output directory for generated keys (use only for generating several keys)
     #[arg(short, long, conflicts_with = "path", requires = "number")]
@@ -59,15 +59,13 @@ fn main() -> anyhow::Result<()> {
         let path = format!("{}{}{}", full_path_stem, 0, FILE_EXTENSION);
         first_key.save_to_file(path)?;
 
-        let mut prev_key = first_key;
         for i in 1..number {
             let key_pair = BLSKeyPair::from(
-                gen_bls_key_pair_based_on_key_material(&prev_key.secret)
+                gen_bls_key_pair()
                     .map_err(|e| anyhow::format_err!("Failed to generate BLS key pair: {e}"))?,
             );
             let path = format!("{}{}{}", full_path_stem, i, FILE_EXTENSION);
             key_pair.save_to_file(path)?;
-            prev_key = key_pair;
         }
         return Ok(());
     }
